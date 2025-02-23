@@ -17,10 +17,10 @@ class ArticleDetailController(
 
     @PostMapping("/article/add")
     fun add(@RequestBody articleDetailDTO: ArticleDetailDTO): ResponseMessage<out Any> {
-        try {
-            return articleDetailServices.add(articleDetailDTO).success()
+        return try {
+            articleDetailServices.add(articleDetailDTO).success()
         } catch (e: Exception) {
-            return articleDetailDTO.failed(e.message!!)
+            articleDetailDTO.failed(e.message!!)
         }
     }
 }

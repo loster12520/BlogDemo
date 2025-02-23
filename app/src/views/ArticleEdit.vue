@@ -3,19 +3,24 @@ import {useRoute, useRouter} from "vue-router";
 import {onMounted, ref, watch} from "vue";
 import axios from "axios";
 
-const route = useRoute(); // 获取路由对象
-const router = useRouter(); // 获取路由对象
+const route = useRoute() // 获取路由对象
+const router = useRouter() // 获取路由对象
 
-const article = ref({}); // 文章内容
-const articleInformation = ref({}); // 文章数据
+const article = ref({
+  title: "",
+  author: "",
+  description: "",
+}) // 文章内容
+const articleInformation = ref({}) // 文章数据
 
-const loading = ref(true); // 加载状态
-const error = ref(null); // 错误信息
+const loading = ref(true) // 加载状态
+const error = ref(null) // 错误信息
 
 const md = ref("")
-const html = ref("");
+const html = ref("")
 
-let isChange = false;
+let isChange = false
+let isNew = false
 
 watch(md, async (newVal) => {
   isChange = true
@@ -56,6 +61,18 @@ function goBack() {
 }
 
 function save() {
+  if (isNew) {
+    axios.post("http://localhost:8080/article/add", {
+      title: md,
+      author: html,
+      description: articleInformation.value.id,
+    }) // todo
+  }
+  axios.post("http://localhost:8080/article/add", {
+    md: md,
+    html: html,
+    articleInformationId: articleInformation.value.id,
+  })
   router.push(`/article/${article.value.id}`)
 }
 
@@ -74,7 +91,9 @@ const handleCancel = () => {
 // 组件挂载时获取文章详情
 onMounted(() => {
   const articleId = route.params.id; // 从路由参数中获取文章ID
-  if (articleId) {
+  if (articleId === 0) {
+    isNew = true
+  } else if (articleId) {
     fetchArticle(articleId);
   } else {
     error.value = 'Article ID is missing.'; // 处理ID缺失的情况
@@ -94,8 +113,12 @@ onMounted(() => {
         <a-button key="1" @click="save">Save</a-button>
       </template>
       <a-descriptions size="small" :column="3">
-        <a-descriptions-item label="Author">{{ articleInformation.author }}</a-descriptions-item>
-        <a-descriptions-item label="Description">{{ articleInformation.description }}</a-descriptions-item>
+        <a-descriptions-item label="Author">
+          <a-input v-model:value="articleInformation.author" placeholder="Author"/>
+        </a-descriptions-item>
+        <a-descriptions-item label="Description">
+          <a-input v-model:value="articleInformation.description" placeholder="Description" auto-size/>
+        </a-descriptions-item>
       </a-descriptions>
     </a-page-header>
     <div class="Content">
