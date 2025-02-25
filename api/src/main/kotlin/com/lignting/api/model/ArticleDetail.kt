@@ -19,6 +19,7 @@ data class ArticleDetail(
 )
 
 data class ArticleDetailDTO(
+    var id: Long? = 0L,
     var md: String = "",
     var html: String = "",
     var articleInformationId: Long = 0,

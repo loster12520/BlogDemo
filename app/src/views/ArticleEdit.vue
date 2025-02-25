@@ -7,11 +7,17 @@ const route = useRoute() // 获取路由对象
 const router = useRouter() // 获取路由对象
 
 const article = ref({
+  id: 0,
   title: "",
   author: "",
   description: "",
 }) // 文章内容
-const articleInformation = ref({}) // 文章数据
+const articleInformation = ref({
+  id: 0,
+  title: "",
+  author: "",
+  description: ""
+}) // 文章数据
 
 const loading = ref(true) // 加载状态
 const error = ref(null) // 错误信息
@@ -60,20 +66,45 @@ function goBack() {
     router.push(`/article/${article.value.id}`)
 }
 
-function save() {
-  if (isNew) {
-    axios.post("http://localhost:8080/article/add", {
-      title: md,
-      author: html,
-      description: articleInformation.value.id,
-    }) // todo
+const save = async () => {
+  try {
+    if (isNew) {
+      // 创建新文章信息
+      const infoResponse = await axios.post("http://localhost:8080/article/information/add", {
+        title: articleInformation.value.title,
+        author: articleInformation.value.author,
+        description: articleInformation.value.description,
+      });
+
+      // 创建文章内容
+      const contentResponse = await axios.post("http://localhost:8080/article/add", {
+        md: md.value,
+        html: html.value,
+        articleInformationId: infoResponse.data.id, // 使用实际返回的ID
+      });
+
+      // 更新本地数据
+      article.value = {
+        ...contentResponse.data,
+        articleInformation: infoResponse.data
+      };
+    } else {
+      console.log("new!!")
+      // 更新现有文章
+      await axios.post(`http://localhost:8080/article/add`, {
+        id: article.id,
+        md: md.value,
+        html: html.value,
+        articleInformationId: articleInformation.value.id,
+      });
+    }
+
+    isChange = false;
+    router.push(`/article/${article.value.id}`);
+  } catch (error) {
+    console.error("保存失败:", error);
+    // 这里可以添加用户提示
   }
-  axios.post("http://localhost:8080/article/add", {
-    md: md,
-    html: html,
-    articleInformationId: articleInformation.value.id,
-  })
-  router.push(`/article/${article.value.id}`)
 }
 
 const open = ref(false);
@@ -141,6 +172,34 @@ onMounted(() => {
       <p class="Text">快给我保存！！</p>
       <p class="Text">哼！</p>
     </a-modal>
+<!--    <a-form-->
+<!--        name="basic"-->
+<!--        :label-col="{ span: 8 }"-->
+<!--        :wrapper-col="{ span: 16 }"-->
+<!--        autocomplete="on"-->
+<!--        @finish="onFinish"-->
+<!--        @finishFailed="onFinishFailed"-->
+<!--    >-->
+<!--      <a-form-item-->
+<!--          label="Username"-->
+<!--          name="username"-->
+<!--          :rules="[{ required: true, message: 'Please input your username!' }]"-->
+<!--      >-->
+<!--        <a-input v-model:value="formState.username"/>-->
+<!--      </a-form-item>-->
+
+<!--      <a-form-item-->
+<!--          label="Password"-->
+<!--          name="password"-->
+<!--          :rules="[{ required: true, message: 'Please input your password!' }]"-->
+<!--      >-->
+<!--        <a-input-password v-model:value="formState.password"/>-->
+<!--      </a-form-item>-->
+
+<!--      <a-form-item :wrapper-col="{ offset: 8, span: 16 }">-->
+<!--        <a-button type="primary" html-type="submit">Submit</a-button>-->
+<!--      </a-form-item>-->
+<!--    </a-form>-->
   </div>
 </template>
 

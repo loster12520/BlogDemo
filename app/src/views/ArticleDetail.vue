@@ -58,7 +58,9 @@ onMounted(() => {
         <a-descriptions-item label="Description">{{ articleInformation.description }}</a-descriptions-item>
       </a-descriptions>
     </a-page-header>
-    <div v-html="article.html" class="Content"/>
+    <article class="markdown-body Render">
+      <div v-html="article.html" class="Content"/>
+    </article>
   </div>
 </template>
 
