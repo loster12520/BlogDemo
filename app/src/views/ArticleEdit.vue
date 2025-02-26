@@ -70,11 +70,7 @@ const save = async () => {
   try {
     if (isNew) {
       // 创建新文章信息
-      const infoResponse = await axios.post("http://localhost:8080/article/information/add", {
-        title: articleInformation.value.title,
-        author: articleInformation.value.author,
-        description: articleInformation.value.description,
-      });
+      const infoResponse = await axios.post("http://localhost:8080/article/information/add", articleInformation);
 
       // 创建文章内容
       const contentResponse = await axios.post("http://localhost:8080/article/add", {
@@ -100,7 +96,7 @@ const save = async () => {
     }
 
     isChange = false;
-    router.push(`/article/${article.value.id}`);
+    await router.push(`/article/${article.value.id}`);
   } catch (error) {
     console.error("保存失败:", error);
     // 这里可以添加用户提示
@@ -119,10 +115,21 @@ const handleCancel = () => {
   open.value = false;
 };
 
+const informationOpen = ref(false);
+
+const informationHandleSave = () => {
+  axios.post("http://localhost:8080/article/information/add", articleInformation)
+  isNew = false;
+  informationOpen.value = false;
+}
+const informationHandleCancel = () => {
+  informationOpen.value = false;
+};
+
 // 组件挂载时获取文章详情
 onMounted(() => {
   const articleId = route.params.id; // 从路由参数中获取文章ID
-  if (articleId === 0) {
+  if (articleId == 0) {
     isNew = true
   } else if (articleId) {
     fetchArticle(articleId);
@@ -141,25 +148,26 @@ onMounted(() => {
         class="Header"
     >
       <template #extra>
-        <a-button key="1" @click="save">Save</a-button>
+        <a-button key="1" @click="() => informationOpen=true">EditInformation</a-button>
+        <a-button key="2" @click="save">Save</a-button>
       </template>
-      <a-descriptions size="small" :column="3">
-        <a-descriptions-item label="Author">
-          <a-input v-model:value="articleInformation.author" placeholder="Author"/>
-        </a-descriptions-item>
-        <a-descriptions-item label="Description">
-          <a-input v-model:value="articleInformation.description" placeholder="Description" auto-size/>
-        </a-descriptions-item>
-      </a-descriptions>
+      <template #tags>
+        <a-tag color="blue">{{ articleInformation.author }}</a-tag>
+      </template>
     </a-page-header>
+
+
     <div class="Content">
       <div class="Code">
-        <textarea v-model="md" placeholder="Write your markdown here..."></textarea>
+        <a-textarea v-model:value="md" placeholder="Write your markdown here..." :rows="4"/>
       </div>
+      <a-divider type="vertical" class="Divider"/>
       <article class="markdown-body Render">
         <div v-html="html" class="RenderBody"/>
       </article>
     </div>
+
+
     <a-modal v-model:open="open" title="未保存！" @ok="handleOk">
       <template #footer>
         <a-button key="back" @click="handleCancel">Cancel</a-button>
@@ -172,42 +180,17 @@ onMounted(() => {
       <p class="Text">快给我保存！！</p>
       <p class="Text">哼！</p>
     </a-modal>
-    <a-form
-        name="basic"
-        :label-col="{ span: 8 }"
-        :wrapper-col="{ span: 16 }"
-        autocomplete="on"
-        @finish="onFinish"
-        @finishFailed="onFinishFailed"
-    >
-      <a-form-item
-          label="Title"
-          name="title"
-          :rules="[{ required: true, message: 'Your title!' }]"
-      >
-        <a-input v-model:value="article.title"/>
-      </a-form-item>
-
-      <a-form-item
-          label="Author"
-          name="author"
-          :rules="[{ required: true, message: 'Your author!' }]"
-      >
-        <a-input v-model:value="article.author"/>
-      </a-form-item>
-
-      <a-form-item
-          label="Description"
-          name="description"
-          :rules="[{ required: true, message: 'Your description!' }]"
-      >
-        <a-input v-model:value="article.description"/>
-      </a-form-item>
-
-      <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-        <a-button type="primary" html-type="submit">Submit</a-button>
-      </a-form-item>
-    </a-form>
+    <a-modal v-model:open="informationOpen" title="信息修改" @ok="informationHandleSave">
+      <template #footer>
+        <a-button key="back" @click="informationHandleCancel">Cancel</a-button>
+        <a-button key="submit" type="primary" @click="informationHandleSave">Save</a-button>
+      </template>
+      <a-space direction="vertical">
+        <a-input prefix="Title" v-model:value="articleInformation.title" placeholder="your title"/>
+        <a-input prefix="Author" v-model:value="articleInformation.author" placeholder="your author"/>
+        <a-input prefix="Description" v-model:value="articleInformation.description" placeholder="your description"/>
+      </a-space>
+    </a-modal>
   </div>
 </template>
 
@@ -220,22 +203,27 @@ onMounted(() => {
 }
 
 #ArticleEdit .Header {
-  padding-bottom: 0;
+  padding-bottom: 5vh;
 }
 
 #ArticleEdit .Content {
   display: flex; /* 使用 Flexbox 布局 */
   margin: auto;
-  border: 3px solid #73AD21;
+  border: 3px solid rgba(143, 143, 143, 0.48);
   padding: 1%;
+  width: 90%;
   height: 80vh; /* 设置 Content 的高度 */
+}
+
+#ArticleEdit .Divider {
+  height: 100%;
+  color: #4b7eac;
 }
 
 #ArticleEdit .Code {
   flex: 1; /* 占据一半宽度 */
   padding: 1%;
   box-sizing: border-box;
-  border: 2px double #73AD21;
 }
 
 #ArticleEdit .Code textarea {
@@ -250,6 +238,5 @@ onMounted(() => {
   padding: 1%;
   box-sizing: border-box;
   overflow-y: auto; /* 添加滚动条 */
-  border: 2px double #73AD21;
 }
 </style>

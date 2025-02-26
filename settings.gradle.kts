@@ -1,6 +1,6 @@
 rootProject.name = "BlogDemo"
 
-include("app", ":api")
+include("app", "api")
 
 // 配置插件管理
 pluginManagement {
