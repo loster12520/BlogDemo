@@ -1,6 +1,6 @@
 <script setup>
 import {useRoute, useRouter} from "vue-router";
-import {onMounted, ref, watch} from "vue";
+import {onMounted, ref} from "vue";
 import axios from "axios";
 
 const route = useRoute() // 获取路由对象
@@ -8,50 +8,46 @@ const router = useRouter() // 获取路由对象
 
 const article = ref({
   id: 0,
-  title: "",
-  author: "",
-  description: "",
+  md: "",
+  html: "",
+  articleInformation: {
+    id: 0,
+    title: "",
+    author: "",
+    description: ""
+  }
 }) // 文章内容
-const articleInformation = ref({
-  id: 0,
-  title: "",
-  author: "",
-  description: ""
-}) // 文章数据
 
 const loading = ref(true) // 加载状态
 const error = ref(null) // 错误信息
 
-const md = ref("")
-const html = ref("")
-
 let isChange = false
 let isNew = false
 
-watch(md, async (newVal) => {
+const flush = async () => {
   isChange = true
-  if (newVal.length === 0) {
-    html.value = ""; // 如果 Markdown 内容为空，直接设置 HTML 为空
+  if (article.value.md.length === 0) {
+    article.value.html = ""; // 如果 Markdown 内容为空，直接设置 HTML 为空
     return;
   }
   try {
     const response = await axios.post("https://api.github.com/markdown", {
-      text: newVal
+      text: article.value.md
     });
-    html.value = response.data; // 设置转换后的 HTML 内容
+    article.value.html = response.data; // 设置转换后的 HTML 内容
   } catch (error) {
     console.error("请求 GitHub Markdown API 失败：", error);
-    html.value = "<p>无法加载内容，请稍后重试。</p>"; // 提示用户请求失败
+    article.value.html = "<p>无法加载内容，请稍后重试。</p>"; // 提示用户请求失败
   }
-});
+}
 
 // 根据ID获取文章详情
 const fetchArticle = async (id) => {
   try {
     const response = await axios.get(`http://localhost:8080/article/${id}`); // 假设后端接口为 /api/articles/:id
-    article.value = response.data.data; // 更新文章数据
-    articleInformation.value = article.value.articleInformation
-    md.value = article.value.md
+    article.value = {
+      ...response.data.data
+    }; // 更新文章数据
   } catch (err) {
     error.value = 'Failed to load article details.'; // 处理错误
   } finally {
@@ -70,33 +66,40 @@ const save = async () => {
   try {
     if (isNew) {
       // 创建新文章信息
-      const infoResponse = await axios.post("http://localhost:8080/article/information/add", articleInformation);
+      const infoResponse = await axios.post("http://localhost:8080/article/information/add", {
+        ...article.value.articleInformation
+      });
 
       // 创建文章内容
       const contentResponse = await axios.post("http://localhost:8080/article/add", {
-        md: md.value,
-        html: html.value,
+        md: article.value.md,
+        html: article.value.html,
         articleInformationId: infoResponse.data.id, // 使用实际返回的ID
       });
 
       // 更新本地数据
       article.value = {
         ...contentResponse.data,
-        articleInformation: infoResponse.data
+        articleInformation: {
+          ...infoResponse.data
+        }
       };
     } else {
-      console.log("new!!")
       // 更新现有文章
-      await axios.post(`http://localhost:8080/article/add`, {
-        id: article.id,
-        md: md.value,
-        html: html.value,
-        articleInformationId: articleInformation.value.id,
+      const contentResponse = await axios.post(`http://localhost:8080/article/add`, {
+        id: article.value.id,
+        md: article.value.md,
+        html: article.value.html,
+        articleInformationId: article.value.articleInformation.id,
       });
+
+      article.value = {
+        ...contentResponse.data
+      };
     }
 
     isChange = false;
-    await router.push(`/article/${article.value.id}`);
+    await router.push(`/article/${article.value.articleInformation.id}`);
   } catch (error) {
     console.error("保存失败:", error);
     // 这里可以添加用户提示
@@ -106,7 +109,7 @@ const save = async () => {
 const open = ref(false);
 
 const handleOk = () => {
-  router.push(`/article/${article.value.id}`)
+  router.push(`/article/${article.value.articleInformation.id}`)
 };
 const handleSave = () => {
   save()
@@ -117,8 +120,13 @@ const handleCancel = () => {
 
 const informationOpen = ref(false);
 
-const informationHandleSave = () => {
-  axios.post("http://localhost:8080/article/information/add", articleInformation)
+const informationHandleSave = async () => {
+  const result = await axios.post("http://localhost:8080/article/information/add", {
+    ...article.value.articleInformation
+  })
+  article.value.articleInformation.value = {
+    ...result.data.data
+  }
   isNew = false;
   informationOpen.value = false;
 }
@@ -142,28 +150,29 @@ onMounted(() => {
 <template>
   <div id="ArticleEdit">
     <a-page-header
-        :title="articleInformation.title"
-        :sub-title="articleInformation.description"
+        :title="article.articleInformation.title"
+        :sub-title="article.articleInformation.description"
         @back="goBack"
         class="Header"
     >
       <template #extra>
+        <a-button key="3" @click="flush">Flush</a-button>
         <a-button key="1" @click="() => informationOpen=true">EditInformation</a-button>
         <a-button key="2" @click="save">Save</a-button>
       </template>
       <template #tags>
-        <a-tag color="blue">{{ articleInformation.author }}</a-tag>
+        <a-tag color="blue">{{ article.articleInformation.author }}</a-tag>
       </template>
     </a-page-header>
 
 
     <div class="Content">
       <div class="Code">
-        <a-textarea v-model:value="md" placeholder="Write your markdown here..." :rows="4"/>
+        <a-textarea v-model:value="article.md" placeholder="Write your markdown here..." :rows="4"/>
       </div>
       <a-divider type="vertical" class="Divider"/>
       <article class="markdown-body Render">
-        <div v-html="html" class="RenderBody"/>
+        <div v-html="article.html" class="RenderBody"/>
       </article>
     </div>
 
@@ -186,9 +195,10 @@ onMounted(() => {
         <a-button key="submit" type="primary" @click="informationHandleSave">Save</a-button>
       </template>
       <a-space direction="vertical">
-        <a-input prefix="Title" v-model:value="articleInformation.title" placeholder="your title"/>
-        <a-input prefix="Author" v-model:value="articleInformation.author" placeholder="your author"/>
-        <a-input prefix="Description" v-model:value="articleInformation.description" placeholder="your description"/>
+        <a-input prefix="Title" v-model:value="article.articleInformation.title" placeholder="your title"/>
+        <a-input prefix="Author" v-model:value="article.articleInformation.author" placeholder="your author"/>
+        <a-input prefix="Description" v-model:value="article.articleInformation.description"
+                 placeholder="your description"/>
       </a-space>
     </a-modal>
   </div>

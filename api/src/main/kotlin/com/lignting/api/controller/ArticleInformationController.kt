@@ -1,5 +1,6 @@
 package com.lignting.api.controller
 
+import com.lignting.api.model.ArticleInformation
 import com.lignting.api.model.ArticleInformationDTO
 import com.lignting.api.model.success
 import com.lignting.api.services.IArticleInformationService
@@ -15,6 +16,6 @@ class ArticleInformationController(private val articleInformationService: IArtic
         articleInformationService.get(id).success()
 
     @PostMapping("/article/information/add")
-    fun add(@RequestBody articleInformationDTO: ArticleInformationDTO) =
-        articleInformationService.add(articleInformationDTO).success()
+    fun add(@RequestBody articleInformation: ArticleInformation) =
+        articleInformationService.add(articleInformation).success()
 }
