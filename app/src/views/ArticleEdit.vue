@@ -64,6 +64,7 @@ function goBack() {
 
 const save = async () => {
   try {
+    console.log(article.value)
     if (isNew) {
       // 创建新文章信息
       const infoResponse = await axios.post("http://localhost:8080/article/information/add", {
@@ -79,9 +80,9 @@ const save = async () => {
 
       // 更新本地数据
       article.value = {
-        ...contentResponse.data,
+        ...contentResponse.data.data,
         articleInformation: {
-          ...infoResponse.data
+          ...infoResponse.data.data
         }
       };
     } else {
@@ -94,11 +95,10 @@ const save = async () => {
       });
 
       article.value = {
-        ...contentResponse.data
+        ...contentResponse.data.data
       };
     }
-
-    isChange = false;
+    console.log(article.value)
     await router.push(`/article/${article.value.articleInformation.id}`);
   } catch (error) {
     console.error("保存失败:", error);
@@ -124,7 +124,7 @@ const informationHandleSave = async () => {
   const result = await axios.post("http://localhost:8080/article/information/add", {
     ...article.value.articleInformation
   })
-  article.value.articleInformation.value = {
+  article.value.articleInformation = {
     ...result.data.data
   }
   isNew = false;

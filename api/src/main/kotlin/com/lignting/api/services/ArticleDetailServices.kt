@@ -26,7 +26,6 @@ class ArticleDetailServices(
     override fun add(articleDetailDTO: ArticleDetailDTO): ArticleDetail {
         val articleInformation = articleInformationRepository.findById(articleDetailDTO.articleInformationId).get()
         val articleDetail = ArticleDetail(
-            id = articleInformation.id,
             md = articleDetailDTO.md,
             html = articleDetailDTO.html,
             articleInformation = articleInformation

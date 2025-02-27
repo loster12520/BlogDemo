@@ -77,7 +77,7 @@ onMounted(() => {
 #ArticleDetail .Content {
   margin: auto;
   width: 80%;
-  border: 3px solid #73AD21;
+  border: 3px solid rgba(143, 143, 143, 0.48);
   padding: 1%;
 }
 </style>
