@@ -64,7 +64,6 @@ function goBack() {
 
 const save = async () => {
   try {
-    console.log(article.value)
     if (isNew) {
       // 创建新文章信息
       const infoResponse = await axios.post("http://localhost:8080/article/information/add", {
@@ -98,7 +97,6 @@ const save = async () => {
         ...contentResponse.data.data
       };
     }
-    console.log(article.value)
     await router.push(`/article/${article.value.articleInformation.id}`);
   } catch (error) {
     console.error("保存失败:", error);

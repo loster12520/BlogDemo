@@ -27,7 +27,6 @@ const router = createRouter({
     history: createWebHistory(),
     routes,
 })
-
 createApp(App)
     .use(router)
     .use(Antd)
