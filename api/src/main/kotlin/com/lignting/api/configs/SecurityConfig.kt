@@ -2,63 +2,55 @@ package com.lignting.api.configs
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
-import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.core.context.SecurityContext
-import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.CorsConfigurationSource
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
-import java.util.*
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 
 @Configuration
 @EnableWebSecurity
 class SecurityConfig {
+    @Bean
+    fun userDetailsService(): UserDetailsService =
+        InMemoryUserDetailsManager(
+            User.withUsername("user")
+                .password(passwordEncoder().encode("password"))
+                .roles("USER")
+                .build(),
+            User.withUsername("admin")
+                .password(passwordEncoder().encode("admin"))
+                .roles("ADMIN")
+                .build()
+        )
 
     @Bean
     fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
-    fun securityContext(): SecurityContext = SecurityContextHolder.getContext()
-
-    @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain =
         http
-            .csrf { it.disable() }
-            .cors(Customizer.withDefaults())
-            .authorizeHttpRequests {
-                it.requestMatchers("/login").permitAll()
-                    .requestMatchers(
-                        HttpMethod.GET,
-                        "/",
-                        "/*.html",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js",
-                        "/profile/**"
-                    ).permitAll()
-                    .anyRequest().authenticated()
+            .csrf { it.disable() } // 禁用CSRF保护
+            .authorizeHttpRequests { authorize ->
+                authorize
+                    .requestMatchers("/admin/**").hasRole("ADMIN") // 配置路径权限
+                    .requestMatchers("/user/**").hasRole("USER")
+                    .requestMatchers("/", "/home", "/register").permitAll() // 允许匿名访问的路径
+                    .anyRequest().authenticated() // 其他请求需要认证
             }
-            .cors {
-                it.configurationSource(corsConfigurationSource())
+            .formLogin { login ->
+                login
+                    .loginPage("/login") // 自定义登录页面
+                    .permitAll() // 允许匿名访问登录页面
+            }
+            .logout { logout ->
+                logout
+                    .logoutRequestMatcher(AntPathRequestMatcher("/logout")) // 登出路由
+                    .permitAll() // 允许匿名访问登出页面
             }
             .build()
-
-    private fun corsConfigurationSource(): CorsConfigurationSource =
-        CorsConfiguration().also {
-            it.allowedHeaders = Collections.singletonList("*")
-            it.allowedMethods = Collections.singletonList("*")
-            it.allowedOrigins = Collections.singletonList("*")
-            it.setMaxAge(3600L)
-        }.let { configuration ->
-            UrlBasedCorsConfigurationSource().also {
-                it.registerCorsConfiguration("/**", configuration)
-            }
-        }
-
 }
