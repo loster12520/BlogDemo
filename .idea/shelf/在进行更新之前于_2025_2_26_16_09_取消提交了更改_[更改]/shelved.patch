@@ -1,0 +1,17 @@
+Index: api/src/main/resources/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>spring.application.name=api\r\n\r\n\r\nspring.datasource.username=root\r\nspring.datasource.password=517158\r\nspring.datasource.url=jdbc:mysql://localhost:3306/lignting_blog_test\r\n\r\nspring.jpa.show-sql=true\r\nspring.jpa.properties.hibernate.format_sql=true\r\nspring.jpa.hibernate.ddl-auto=update
+===================================================================
+diff --git a/api/src/main/resources/application.properties b/api/src/main/resources/application.properties
+--- a/api/src/main/resources/application.properties	(revision a975ec21e27348b011dd93d3bdfc964816e404f8)
++++ b/api/src/main/resources/application.properties	(date 1740476620674)
+@@ -2,7 +2,7 @@
+ 
+ 
+ spring.datasource.username=root
+-spring.datasource.password=517158
++spring.datasource.password=123456
+ spring.datasource.url=jdbc:mysql://localhost:3306/lignting_blog_test
+ 
+ spring.jpa.show-sql=true
