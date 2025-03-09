@@ -1,8 +1,6 @@
 package com.lignting.api.services
 
 import com.lignting.api.model.ArticleInformation
-import com.lignting.api.model.ArticleInformationDTO
-import com.lignting.api.model.toBase
 import com.lignting.api.repositories.ArticleInformationRepository
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
