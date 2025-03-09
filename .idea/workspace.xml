@@ -5,18 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d2776aee-a0f8-4129-a6b5-a4631653a471" name="更改" comment="first version!">
-      <change afterPath="$PROJECT_DIR$/api/src/main/kotlin/com/lignting/api/configs/RedisConfig.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/kotlin/com/lignting/api/configs/ShiroConfig.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/api/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/com/lignting/api/configs/SecurityConfig.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/com/lignting/api/controller/UserController.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/com/lignting/api/model/CustomUser.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/com/lignting/api/repositories/UserRepository.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/com/lignting/api/services/ArticleDetailServices.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/com/lignting/api/services/ArticleDetailServices.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/com/lignting/api/services/ArticleInformationService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/com/lignting/api/services/ArticleInformationService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/com/lignting/api/services/UserService.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/views/login.vue" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/kotlin/com/lignting/api/model/User.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/kotlin/com/lignting/api/realms/AccountRealms.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/kotlin/com/lignting/api/repositories/UserRepository.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/api/src/main/kotlin/com/lignting/api/services/UserService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/kotlin/com/lignting/api/configs/ShiroConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/kotlin/com/lignting/api/configs/ShiroConfig.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,6 +134,9 @@
       <recent name="C:\code\project\kotlin\BlogDemo\api\src\main\resources" />
       <recent name="C:\code\project\kotlin\BlogDemo\api\src\main\kotlin\com\lignting\api\model" />
     </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="com.lignting.api.model" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration name="ApiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
@@ -205,7 +202,7 @@
       <workItem from="1741250916635" duration="3645000" />
       <workItem from="1741442956408" duration="13000" />
       <workItem from="1741483731879" duration="2932000" />
-      <workItem from="1741520887434" duration="602000" />
+      <workItem from="1741520887434" duration="4627000" />
     </task>
     <task id="LOCAL-00001" summary="c">
       <option name="closed" value="true" />
@@ -263,7 +260,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741053495572</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="first version!">
+      <option name="closed" value="true" />
+      <created>1741521769380</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1741521769380</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
