@@ -14,7 +14,7 @@ fun <T> T.success() = ResponseMessage(
     this
 )
 
-fun <T> T.failed(message: String) = ResponseMessage(
+fun <T> T.failed(message: String = "error!!") = ResponseMessage(
     HttpStatus.NOT_FOUND.value(),
     message,
     this

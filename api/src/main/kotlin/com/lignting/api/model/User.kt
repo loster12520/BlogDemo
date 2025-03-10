@@ -9,9 +9,9 @@ data class User(
     var id: Long = 0L,
     var username: String = "",
     var password: String = "",
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.MERGE], orphanRemoval = true)
+    @ManyToMany(mappedBy = "users", cascade = [CascadeType.MERGE])
     var permissions: MutableList<Permission> = mutableListOf(),
-    @OneToMany(mappedBy = "user", cascade = [CascadeType.MERGE], orphanRemoval = true)
+    @ManyToMany(mappedBy = "users", cascade = [CascadeType.MERGE])
     var roles: MutableList<Role> = mutableListOf()
 )
 
@@ -19,12 +19,16 @@ data class User(
 data class Permission(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L,
-    var name: String = ""
+    var name: String = "",
+    @ManyToMany
+    var users: MutableList<User> = mutableListOf(),
 )
 
 @Entity
 data class Role(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0L,
-    var name: String = ""
+    var name: String = "",
+    @ManyToMany
+    var users: MutableList<User> = mutableListOf(),
 )

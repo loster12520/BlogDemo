@@ -5,6 +5,7 @@ import com.lignting.api.model.Role
 import com.lignting.api.model.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
 interface UserRepository : JpaRepository<User, Long> {
@@ -13,10 +14,10 @@ interface UserRepository : JpaRepository<User, Long> {
 
 @Repository
 interface PermissionRepository : JpaRepository<Permission, Long>{
-    fun getPermissionByName(name: String): Permission?
+    fun getPermissionByName(name: String): Optional<Permission>
 }
 
 @Repository
 interface RoleRepository : JpaRepository<Role, Long>{
-    fun getRoleByName(name: String): Role?
+    fun getRoleByName(name: String): Optional<Role>
 }

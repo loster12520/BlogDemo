@@ -26,7 +26,18 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
-	implementation("org.apache.shiro:shiro-spring:2.0.2")
+//	implementation("org.apache.shiro:shiro-spring:2.0.2", classifier = "jakarta") {
+//		classifier = "jakarta"
+//		// 排除可能冲突的依赖
+//		exclude(group = "org.apache.shiro", module = "shiro-core")
+//		exclude(group = "org.apache.shiro", module = "shiro-web")
+//	}
+	implementation("org.apache.shiro","shiro-spring","2.0.2", classifier = "jakarta"){
+		exclude(group = "org.apache.shiro", module = "shiro-core")
+		exclude(group = "org.apache.shiro", module = "shiro-web")
+	}
+	implementation("org.apache.shiro","shiro-core","2.0.2", classifier = "jakarta")
+	implementation("org.apache.shiro","shiro-web","2.0.2", classifier = "jakarta")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
