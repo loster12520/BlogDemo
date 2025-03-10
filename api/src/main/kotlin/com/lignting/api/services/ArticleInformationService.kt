@@ -1,9 +1,8 @@
 package com.lignting.api.services
 
 import com.lignting.api.model.ArticleInformation
-import com.lignting.api.model.ArticleInformationDTO
-import com.lignting.api.model.toBase
 import com.lignting.api.repositories.ArticleInformationRepository
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 
 interface IArticleInformationService {
@@ -15,7 +14,9 @@ interface IArticleInformationService {
 @Service
 class ArticleInformationService(private val articleInformationRepository: ArticleInformationRepository) :
     IArticleInformationService {
+    @Cacheable("ArticleInformationGetList")
     override fun getList(): List<ArticleInformation> = articleInformationRepository.findAll()
+    @Cacheable("ArticleInformationGet")
     override fun get(id: Long) = articleInformationRepository.findById(id).get()
     override fun add(articleInformation: ArticleInformation) = articleInformationRepository.save(articleInformation)
 }

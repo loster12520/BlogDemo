@@ -16,5 +16,13 @@
       <option name="name" value="MavenRepo" />
       <option name="url" value="https://repo.maven.apache.org/maven2/" />
     </remote-repository>
+<<<<<<< HEAD
+=======
+    <remote-repository>
+      <option name="id" value="aliyunmaven" />
+      <option name="name" value="aliyunmaven" />
+      <option name="url" value="https://maven.aliyun.com/nexus/content/groups/public/" />
+    </remote-repository>
+>>>>>>> 8b117f4823250ee9d4c1db27020fff7c69d556ad
   </component>
 </project>
