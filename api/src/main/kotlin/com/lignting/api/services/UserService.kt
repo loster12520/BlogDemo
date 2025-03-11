@@ -15,12 +15,11 @@ class UserService(
     private val roleRepository: RoleRepository,
     private val permissionRepository: PermissionRepository
 ) {
-    fun getUsers(): List<User> = userRepository.findAll()
-    fun getUserById(id: Long): User = userRepository.findById(id).orElseThrow { RuntimeException("User not found") }
-    fun getUSerByUsername(username: String) = userRepository.getUserByUsername(username).also {
+    fun getUserByUsername(username: String) = userRepository.getUserByUsername(username).also {
         Hibernate.initialize(it?.roles)
         Hibernate.initialize(it?.permissions)
     }
+    fun saveUser(user: User) = userRepository.save(user)
 
     /**
      * test
