@@ -9,7 +9,7 @@ import java.util.*
 
 @Repository
 interface UserRepository : JpaRepository<User, Long> {
-    fun getUserByUsername(username: String): User?
+    fun getUserByUsername(username: String): Optional<User>
 }
 
 @Repository

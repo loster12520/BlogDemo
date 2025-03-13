@@ -15,9 +15,9 @@ class UserService(
     private val roleRepository: RoleRepository,
     private val permissionRepository: PermissionRepository
 ) {
-    fun getUserByUsername(username: String) = userRepository.getUserByUsername(username).also {
-        Hibernate.initialize(it?.roles)
-        Hibernate.initialize(it?.permissions)
+    fun getUserByUsername(username: String) = userRepository.getUserByUsername(username).get().also {
+        Hibernate.initialize(it.roles)
+        Hibernate.initialize(it.permissions)
     }
     fun saveUser(user: User) = userRepository.save(user)
 
@@ -32,19 +32,23 @@ class UserService(
         val userRole = roleRepository.getRoleByName("user").orElseGet {
             roleRepository.save(Role(name = "user"))
         }
-        userRepository.save(
-            User(
-                username = "admin_test",
-                password = "admin123456",
-                roles = mutableListOf(adminRole)
+        userRepository.getUserByUsername("admin_test").orElseGet {
+            userRepository.save(
+                User(
+                    username = "admin_test",
+                    password = "admin123456",
+                    roles = mutableListOf(adminRole)
+                )
             )
-        )
-        userRepository.save(
-            User(
-                username = "user_test",
-                password = "user123456",
-                roles = mutableListOf(userRole)
+        }
+        userRepository.getUserByUsername("user_test").orElseGet {
+            userRepository.save(
+                User(
+                    username = "user_test",
+                    password = "user123456",
+                    roles = mutableListOf(userRole)
+                )
             )
-        )
+        }
     }
 }

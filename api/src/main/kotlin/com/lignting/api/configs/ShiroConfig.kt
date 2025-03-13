@@ -17,8 +17,9 @@ class ShiroConfig {
             it.securityManager = defaultWebSecurityManager
             it.filterChainDefinitionMap.putAll(
                 mapOf(
-                    "/public/**" to "anon",
-                    "/**" to "authc"
+                    "/**" to "anon",
+//                    "/public/**" to "anon",
+//                    "/**" to "authc"
                 )
             )
         }
