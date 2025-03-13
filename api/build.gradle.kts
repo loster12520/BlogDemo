@@ -32,8 +32,6 @@ dependencies {
 	}
 	implementation("org.apache.shiro","shiro-core","2.0.2", classifier = "jakarta")
 	implementation("org.apache.shiro","shiro-web","2.0.2", classifier = "jakarta")
-//	implementation("io.springfox:springfox-swagger2:3.0.0")
-//	implementation("io.springfox:springfox-swagger-ui:3.0.0")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

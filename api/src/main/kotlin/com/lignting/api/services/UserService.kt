@@ -2,6 +2,8 @@ package com.lignting.api.services
 
 import com.lignting.api.model.Role
 import com.lignting.api.model.User
+import com.lignting.api.model.UserDTO
+import com.lignting.api.model.toBase
 import com.lignting.api.repositories.PermissionRepository
 import com.lignting.api.repositories.RoleRepository
 import com.lignting.api.repositories.UserRepository
@@ -19,7 +21,7 @@ class UserService(
         Hibernate.initialize(it.roles)
         Hibernate.initialize(it.permissions)
     }
-    fun saveUser(user: User) = userRepository.save(user)
+    fun saveUser(user: UserDTO) = userRepository.save(user.toBase())
 
     /**
      * test
