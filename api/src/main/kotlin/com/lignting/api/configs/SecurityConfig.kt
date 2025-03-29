@@ -34,6 +34,7 @@ class SecurityConfig {
             .cors { it.configurationSource(corsConfigurationSource) }
             .authorizeHttpRequests {
                 it.requestMatchers("/public/**").permitAll()
+                    .requestMatchers("/v3/api-docs/**").permitAll()
                     .anyRequest().authenticated()
             }
             .sessionManagement {
