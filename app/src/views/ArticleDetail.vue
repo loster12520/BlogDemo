@@ -12,8 +12,8 @@ const error = ref(null); // 错误信息
 
 // 根据ID获取文章详情
 const fetchArticle = async (id) => {
-  try {
-    const response = await axios.get(`http://localhost:8080/article/${id}`); // 假设后端接口为 /api/articles/:id
+   try {
+    const response = await axios.get(`http://localhost:8080/public/articleInformation/${id}`);
     article.value = response.data.data; // 更新文章数据
     articleInformation.value = article.value.articleInformation
   } catch (err) {

@@ -1,26 +1,21 @@
 package com.lignting.api.controller
 
-import com.lignting.api.model.ResponseMessage
-import com.lignting.api.model.User
-import com.lignting.api.model.failed
-import com.lignting.api.model.success
+import com.lignting.api.model.*
 import com.lignting.api.repositories.UserRepository
 import com.lignting.api.services.UserService
 import org.apache.shiro.SecurityUtils
 import org.apache.shiro.authc.AuthenticationException
 import org.apache.shiro.authc.IncorrectCredentialsException
 import org.apache.shiro.authc.UsernamePasswordToken
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/public/user")
 class UserController(private val userService: UserService) {
-    @GetMapping("/login")
-    fun login(@RequestParam username: String, @RequestParam password: String): ResponseMessage<Boolean> {
+    @PostMapping("/login")
+    fun login(@RequestBody userDTO: UserDTO): ResponseMessage<Boolean> {
+        val username = userDTO.username
+        val password = userDTO.password
         val subject = SecurityUtils.getSubject()
         try {
             subject.login(UsernamePasswordToken(username, password))
@@ -31,8 +26,8 @@ class UserController(private val userService: UserService) {
     }
 
     @PostMapping("/signIn")
-    fun signIn(@RequestParam username: String, @RequestParam password: String) =
+    fun signIn(@RequestBody userDTO: UserDTO) =
         userService.saveUser(
-            User(username = username, password = password)
+            userDTO.toBase()
         ).success()
 }

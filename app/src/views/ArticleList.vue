@@ -16,8 +16,7 @@ import {ref} from "vue";
 import axios from "axios";
 
 const datas = ref([])
-
-axios.get("http://localhost:8080/article/information").then(
+axios.get("http://localhost:8080/public/articleInformation/list").then(
     (response) => {
       datas.value = response.data.data
     }

@@ -1,6 +1,7 @@
 package com.lignting.api.model
 
 import jakarta.persistence.*
+import org.springframework.beans.BeanUtils
 
 
 @Entity
@@ -32,3 +33,20 @@ data class Role(
     @ManyToMany
     var users: MutableList<User> = mutableListOf(),
 )
+
+data class UserDTO(
+    var username: String = "",
+    var password: String = ""
+)
+
+fun User.toDTO(): UserDTO {
+    val res = UserDTO()
+    BeanUtils.copyProperties(this, res)
+    return res
+}
+
+fun UserDTO.toBase(): User {
+    val res = User()
+    BeanUtils.copyProperties(this, res)
+    return res
+}

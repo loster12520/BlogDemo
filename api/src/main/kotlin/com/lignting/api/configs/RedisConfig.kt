@@ -27,7 +27,7 @@ class RedisConfig {
     @Bean
     fun cacheManager(connectionFactory: RedisConnectionFactory): RedisCacheManager {
         val config = RedisCacheConfiguration.defaultCacheConfig()
-            .entryTtl(Duration.ofMinutes(10))
+            .entryTtl(Duration.ofMinutes(30))
             .serializeValuesWith(
                 RedisSerializationContext.SerializationPair.fromSerializer(
                     GenericJackson2JsonRedisSerializer()

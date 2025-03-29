@@ -17,14 +17,14 @@ class SwaggerConfiguration {
             .info(
                 Info()
                     .title("BlogDemo by lignting")
-                    .contact(Contact())
+                    .contact(Contact().name("lignting").email("xiaoshuo12520@outlook.com"))
                     .description("a blog website create by lignting")
                     .version("v1.0.0")
                     .license(License().name("Apache 2.0").url("http://springdoc.org"))
             )
-//            .externalDocs(
-//                ExternalDocumentation()
-//                    .description("外部文档")
-//                    .url("https://springshop.wiki.github.org/docs")
-//            )
+            .externalDocs(
+                ExternalDocumentation()
+                    .description("接口文档")
+                    .url("/swagger-ui.html")
+            )
 }
