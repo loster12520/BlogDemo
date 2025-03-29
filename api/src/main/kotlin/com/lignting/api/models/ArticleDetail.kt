@@ -1,4 +1,4 @@
-package com.lignting.api.model
+package com.lignting.api.models
 
 import jakarta.persistence.*
 import org.springframework.beans.BeanUtils

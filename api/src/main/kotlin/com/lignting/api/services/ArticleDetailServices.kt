@@ -1,7 +1,7 @@
 package com.lignting.api.services
 
-import com.lignting.api.model.ArticleDetail
-import com.lignting.api.model.ArticleDetailDTO
+import com.lignting.api.models.ArticleDetail
+import com.lignting.api.models.ArticleDetailDTO
 import com.lignting.api.repositories.ArticleDetailRepository
 import com.lignting.api.repositories.ArticleInformationRepository
 import org.springframework.cache.annotation.Cacheable
@@ -9,10 +9,10 @@ import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Service
 
 interface IArticleDetailServices {
-    fun getByArticleInformationId(id: Long): ArticleDetail?
+    fun getByArticleInformationId(id: Long): Any?
 
     fun getList(): List<ArticleDetail>
-    fun add(articleDetailDTO: ArticleDetailDTO): ArticleDetail
+    fun add(articleDetailDTO: ArticleDetailDTO): Any?
 }
 
 @Service

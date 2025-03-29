@@ -1,25 +1,19 @@
 package com.lignting.api.controller
 
-import com.lignting.api.model.ArticleInformation
-import com.lignting.api.model.ArticleInformationDTO
-import com.lignting.api.model.success
+import com.lignting.api.models.ArticleInformation
 import com.lignting.api.services.IArticleInformationService
-import org.apache.shiro.authz.annotation.RequiresPermissions
 import org.springframework.web.bind.annotation.*
 
 @RestController
 class ArticleInformationController(private val articleInformationService: IArticleInformationService) {
     @GetMapping("/public/articleInformation/list")
-    @RequiresPermissions("article:view")
-    fun getList() = articleInformationService.getList().success()
+    fun getList(): Any? = articleInformationService.getList()
 
     @GetMapping("/public/articleInformation/{id}")
-    @RequiresPermissions("article:view")
-    fun getById(@PathVariable id: Long) =
-        articleInformationService.get(id).success()
+    fun getById(@PathVariable id: Long): Any? =
+        articleInformationService.get(id)
 
-    @PostMapping("/admin/articleInformation/add")
-    @RequiresPermissions("article:add")
-    fun add(@RequestBody articleInformation: ArticleInformation) =
-        articleInformationService.add(articleInformation).success()
+    @PostMapping("/user/articleInformation/add")
+    fun add(@RequestBody articleInformation: ArticleInformation): Any? =
+        articleInformationService.add(articleInformation)
 }
