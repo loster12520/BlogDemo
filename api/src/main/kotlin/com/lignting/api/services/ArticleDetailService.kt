@@ -8,7 +8,7 @@ import org.springframework.cache.annotation.Cacheable
 import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Service
 
-interface IArticleDetailServices {
+interface IArticleDetailService {
     fun getByArticleInformationId(id: Long): Any?
 
     fun getList(): List<ArticleDetail>
@@ -17,10 +17,10 @@ interface IArticleDetailServices {
 
 @Service
 @DependsOn("articleInformationService")
-class ArticleDetailServices(
+class ArticleDetailService(
     private val articleDetailRepository: ArticleDetailRepository,
     private val articleInformationRepository: ArticleInformationRepository
-) : IArticleDetailServices {
+) : IArticleDetailService {
     @Cacheable("ArticleDetailGet")
     override fun getByArticleInformationId(id: Long) = articleDetailRepository.findByArticleInformationId(id)
 

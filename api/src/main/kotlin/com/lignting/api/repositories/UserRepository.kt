@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface UserRepository : JpaRepository<CustomUserModel, Int> {
+interface UserRepository : JpaRepository<CustomUserModel, Long> {
     fun getUserByUserName(username: String): Optional<CustomUserModel>
 }

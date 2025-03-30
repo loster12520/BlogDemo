@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.User
 
 class CustomUser(
     val user: CustomUserModel,
-    val grantedAuthorities: Collection<GrantedAuthority>,
+    grantedAuthorities: Collection<GrantedAuthority>,
 ) : User(user.userName, user.password, grantedAuthorities)
 
 @Entity

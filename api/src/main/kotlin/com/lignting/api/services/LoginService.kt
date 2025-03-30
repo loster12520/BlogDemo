@@ -30,7 +30,7 @@ class LoginService(
         val user = (authenticate.principal as CustomUser).user
         val token = jwtUtils.createJWT(user)
         redisCache.setCacheObject("login:${user.id}", token)
-        return mutableMapOf("token" to token)
+        return mutableMapOf("userId" to user.id, "token" to token)
     }
 
     override fun register(userDTO: UserDTO): Any =
