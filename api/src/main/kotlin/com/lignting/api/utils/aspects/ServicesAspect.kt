@@ -17,7 +17,7 @@ class ServicesAspect {
         try {
             return joinPoint.proceed().success()
         } catch (e: RuntimeException) {
-            logger.warn(e.message,e)
+            logger.warn(e.message, e)
             return joinPoint.args.toList().failed(e.message!!)
         } catch (e: Exception) {
             logger.error(e.message, e)
@@ -28,9 +28,9 @@ class ServicesAspect {
 
 
 data class ResponseBody<T>(
-    val data: T,
-    val code: Int,
-    val message: String
+    var data: T? = null,
+    var code: Int = 0,
+    var message: String = ""
 )
 
 fun <T> T.success(message: String = "success!") =

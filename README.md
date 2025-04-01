@@ -75,7 +75,7 @@ npm run dev
   提供的[blog-vue-springboot](https://github.com/shimh-develop/blog-vue-springboot)项目作为参照进行开发
 - [Github](https://github.com/)
   提供的[markdown渲染服务](https://docs.github.com/en/free-pro-team@latest/rest/reference/markdown)
-- [slydor](https://github.com/slydor)提供的[github-markdown-css](https://github.com/sindresorhus/github-markdown-css)
+- [cdn.jsdelivr.net](https://cdn.jsdelivr.net)提供的[github-markdown-css](https://cdn.jsdelivr.net/npm/github-markdown-css@5.1.0/github-markdown-light.css)
   进行类似Github的markdown渲染样式
 - [Deepseek](https://chat.deepseek.com/)以及[Kimi](https://kimi.moonshot.cn/)提供的ai问答服务
 - [CSDN](https://www.csdn.net/)提供的一系列文章作为参考
